@@ -1,0 +1,58 @@
+{
+  "name": "hono-deploy-demo",
+  "version": "1.0.0",
+  "description": "A comprehensive Hono TypeScript project demonstrating best practices and multiple deployment options",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc && esbuild src/index.ts --bundle --outfile=dist/index.js --platform=node --target=node20 --format=esm",
+    "start": "node dist/index.js",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "deploy:lambda": "npm run build && serverless deploy",
+    "deploy:ecs": "npm run build && docker build -t hono-demo . && aws ecs update-service --cluster hono-cluster --service hono-service --force-new-deployment",
+    "demo": "node examples/api-demo.js"
+  },
+  "keywords": [
+    "hono",
+    "typescript",
+    "api",
+    "serverless",
+    "aws",
+    "deployment"
+  ],
+  "author": "Andrew Allison",
+  "license": "MIT",
+  "dependencies": {
+    "hono": "^4.6.3",
+    "@hono/node-server": "^1.13.2",
+    "@hono/zod-validator": "^0.2.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/cors": "^2.8.17",
+    "@typescript-eslint/eslint-plugin": "^8.18.1",
+    "@typescript-eslint/parser": "^8.18.1",
+    "esbuild": "^0.24.2",
+    "eslint": "^9.17.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8",
+    "@vitest/coverage-v8": "^2.1.8",
+    "serverless": "^3.40.0",
+    "serverless-esbuild": "^1.50.0",
+    "serverless-offline": "^13.5.0",
+    "aws-cdk-lib": "^2.150.0",
+    "constructs": "^10.4.2",
+    "source-map-support": "^0.5.21"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

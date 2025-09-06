@@ -1,0 +1,92 @@
+# Cursor Rules for Hono TypeScript Project
+
+## Project Context
+This is a Hono TypeScript project demonstrating best practices for API development and multiple deployment strategies. The project uses modern tooling and follows TypeScript best practices.
+
+## Code Style & Standards
+- Use TypeScript with strict mode enabled
+- Prefer explicit types over `any`
+- Use Zod for runtime validation
+- Follow functional programming patterns where appropriate
+- Use async/await over Promises
+- Prefer const assertions and readonly where possible
+- Use meaningful variable and function names
+- Add JSDoc comments for public APIs
+
+## Architecture Patterns
+- Use Hono's middleware pattern for cross-cutting concerns
+- Implement proper error handling with try-catch blocks
+- Use environment variables for configuration
+- Implement proper logging with structured data
+- Use dependency injection for testability
+
+## File Organization
+- Keep related functionality in the same file
+- Use barrel exports (index.ts) for clean imports
+- Separate concerns: routes, middleware, services, types
+- Use kebab-case for file names
+- Group by feature, not by type
+
+## API Design
+- Use RESTful conventions
+- Implement proper HTTP status codes
+- Use consistent response formats
+- Implement proper error responses
+- Add request/response validation with Zod
+- Use proper HTTP methods (GET, POST, PUT, DELETE, PATCH)
+
+## Performance Considerations
+- Use streaming for large responses
+- Implement proper caching headers
+- Use compression middleware
+- Optimize database queries
+- Use connection pooling
+- Implement rate limiting
+
+## Security Best Practices
+- Validate all inputs
+- Use HTTPS in production
+- Implement proper CORS configuration
+- Sanitize user inputs
+- Use environment variables for secrets
+- Implement proper authentication/authorization
+
+## Testing
+- Write unit tests for business logic
+- Write integration tests for API endpoints
+- Use descriptive test names
+- Test error cases
+- Mock external dependencies
+- Aim for high test coverage
+
+## Deployment
+- Use environment-specific configurations
+- Implement health checks
+- Use proper logging for monitoring
+- Implement graceful shutdown
+- Use containerization for consistency
+- Follow 12-factor app principles
+
+## Documentation
+- Document all public APIs
+- Include examples in documentation
+- Keep README up to date
+- Document deployment procedures
+- Include troubleshooting guides
+- Document environment variables
+
+## Dependencies
+- Prefer pnpm over npm/yarn
+- Keep dependencies up to date
+- Use exact versions for critical dependencies
+- Audit dependencies regularly
+- Prefer smaller, focused packages
+- Avoid deprecated packages
+
+## Git & Version Control
+- Use conventional commits
+- Write meaningful commit messages
+- Use feature branches
+- Keep commits atomic
+- Use proper .gitignore
+- Tag releases appropriately

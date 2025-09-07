@@ -1,0 +1,71 @@
+name: Deploy Hono API
+
+on:
+  push:
+    branches: [ main, production ]
+  pull_request:
+    branches: [ main, production ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'pnpm'
+        
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: latest
+        
+    - name: Install dependencies
+      run: pnpm install
+      
+    - name: Run tests
+      run: pnpm test
+      
+    - name: Build application
+      run: pnpm run build:lambda
+      
+    - name: Deploy to AWS Lambda (Dev)
+      if: github.ref == 'refs/heads/main'
+      run: |
+        echo "🌿 Deploying from main branch to DEV stage"
+        npx serverless deploy --stage dev
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: us-east-1
+        
+    - name: Deploy to AWS Lambda (Production)
+      if: github.ref == 'refs/heads/production'
+      run: |
+        echo "🚀 Deploying from production branch to PROD stage"
+        npx serverless deploy --stage prod
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: us-east-1
+        
+    - name: Comment deployment URL
+      if: github.event_name == 'push'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const branch = context.ref.replace('refs/heads/', '');
+          const stage = branch === 'main' ? 'dev' : 'prod';
+          const url = `https://4nw09b6sn2.execute-api.us-east-1.amazonaws.com/${stage}/`;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `🚀 **Deployment Successful!**\n\n**Stage:** ${stage}\n**Branch:** ${branch}\n**API URL:** ${url}\n\n✅ All tests passed and deployment completed.`
+          });

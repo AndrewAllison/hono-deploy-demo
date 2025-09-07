@@ -16,6 +16,7 @@
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist",
     "deploy:lambda": "pnpm run build:lambda && AWS_PROFILE=lambda-deploy serverless deploy",
+    "deploy:branch": "./deploy-branch-based.sh",
     "deploy:ecs": "npm run build && cd deployment && cdk deploy",
     "deploy:vercel": "./deploy-vercel.sh",
     "deploy:railway": "./deploy-railway.sh",

@@ -1,0 +1,12 @@
+{
+  "name": "hono-deploy-demo-lambda",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "main": "lambda.js",
+  "dependencies": {
+    "hono": "^4.6.3",
+    "@hono/node-server": "^1.13.2",
+    "@hono/zod-validator": "^0.2.0",
+    "zod": "^3.23.8"
+  }
+}

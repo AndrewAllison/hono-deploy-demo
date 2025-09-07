@@ -10,24 +10,15 @@ provider:
   memorySize: 512
   timeout: 30
   environment:
-    NODE_ENV: ${self:provider.stage}
+    NODE_ENV: development
     CORS_ORIGIN: '*'
     RATE_LIMIT_WINDOW: '900000'
     RATE_LIMIT_MAX: '100'
     LOG_LEVEL: 'info'
-  iam:
-    role:
-      statements:
-        - Effect: Allow
-          Action:
-            - logs:CreateLogGroup
-            - logs:CreateLogStream
-            - logs:PutLogEvents
-          Resource: '*'
 
 functions:
   api:
-    handler: ../src/lambda.handler
+    handler: src/lambda.handler
     events:
       - http:
           path: /{proxy+}
@@ -45,16 +36,11 @@ custom:
   esbuild:
     bundle: true
     minify: true
-    sourcemap: true
+    sourcemap: false
     exclude:
       - aws-sdk
     target: node20
-    define:
-      'require.resolve': undefined
     platform: node
+    format: cjs
     concurrency: 10
-    external:
-      - '@hono/aws-lambda'
-  serverless-offline:
-    httpPort: 3000
-    host: 0.0.0.0
+    packagePath: lambda-package.json
